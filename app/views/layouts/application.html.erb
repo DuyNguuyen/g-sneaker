@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>G-Sneaker</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "app.1dac1a7f", "rel": "preload", "as": "style" %>
+    <%= stylesheet_link_tag "app.1dac1a7f.css", "rel": "stylesheet" %>
+  </head>
+
+    
+  <script>
+    function checkLocal(){
+      for (let i = 1; i <= 10; i++) {
+        if(localStorage.getItem(i) === null || parseInt(localStorage.getItem(i)) == 0){
+          document.getElementById("add_card_div_" + i).style.display = "block";
+          document.getElementById("checked_div_" + i).style.display = "none";
+          document.getElementById("cart_item_" + i).style.display = "none";
+          document.getElementById("item_count_" + i).innerHTML = 0;
+        } else {
+          document.getElementById("add_card_div_" + i).style.display = "none";
+          document.getElementById("checked_div_" + i).style.display = "block";
+          document.getElementById("cart_item_" + i).style.display = "block";
+          document.getElementById("item_count_" + i).innerHTML = parseInt(localStorage.getItem(i));
+        }
+      }
+
+      totalPrice();
+    }
+
+    function totalPrice(){
+      var total = 0;
+      for (let i = 1; i <= 10; i++) {
+        if (parseInt(document.getElementById("item_count_" + i).innerHTML) > 0) 
+        {
+          total += parseInt(document.getElementById("item_count_" + i).innerHTML) * parseFloat(document.getElementById("item_price_" + i).innerHTML)
+        }
+      }
+
+      document.getElementById("total").innerHTML = "$" + total.toFixed(2);
+    } 
+
+    function add_cart(i) {
+      if(localStorage.getItem(i) === null){
+        localStorage.setItem(i, 1);
+        checkLocal();
+      }
+    }
+
+    function increase(i){
+      if(localStorage.getItem(i)){
+        var count = parseInt(localStorage.getItem(i)) + 1;
+        localStorage.setItem(i, count);
+        checkLocal();
+      }
+    }
+
+    function decrease(i){
+      if(localStorage.getItem(i)){
+        if(parseInt(localStorage.getItem(i)) == 1)
+        {
+          localStorage.removeItem(i);
+        } else {
+          var count = parseInt(localStorage.getItem(i)) - 1;
+          localStorage.setItem(i, count);
+        }
+
+        checkLocal();
+      }
+    }
+
+    function remove(i){
+      if(localStorage.getItem(i)){
+        localStorage.removeItem(i);
+        checkLocal();
+      }
+    }
+
+  </script>
+
+  <body onload="checkLocal()"> 
+    <%= yield %>
+  </body>
+
+
+</html>

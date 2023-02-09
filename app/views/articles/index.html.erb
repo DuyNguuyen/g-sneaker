@@ -1,0 +1,77 @@
+<div class="App_mainContent_12BYb">
+    <div class="App_card_38zmH">
+        <div class="App_cardTop_3hHIG">
+            <%= image_tag ("nike"), "class": "App_cardTopLogo_2ho9K"%>
+        </div>
+        <div class="App_cardTitle_29nyq">Our Products</div>
+        <div class="App_cardBody_1tfYc">
+            <div>
+                <% @products.each do |product| %>
+                    <div class="App_shopItem_3FgVU">
+                        <div class="App_shopItemImage_341iU" style="background-color: <%="#" + product.color %>;"><%= image_tag (product.image_url)%></div>
+                        <div class="App_shopItemName_1_FJR"><%= product.name%></div>
+                        <div class="App_shopItemDescription_1EIVK"><%= product.description%></div>
+                        <div class="App_shopItemBottom_3401_">
+                            <div class="App_shopItemPrice_2SLiG"><%= "$"+product.price.to_s%></div>
+                            
+                            <div id="add_card_div_<%=product.id%>" class="App_shopItemButton_23FO1" onclick="add_cart(<%=product.id%>)">
+                                ADD TO CART
+                            </div>
+
+                            <div id="checked_div_<%=product.id%>" class="App_inactive_19f0W App_shopItemButton_23FO1">
+                                <div class="App_shopItemButtonCover_1bH2R">
+                                    <div class="App_shopItemButtonCoverCheckIcon_18IzJ">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+
+    <div class="App_card_38zmH">
+        <div class="App_cardTop_3hHIG">
+        <%= image_tag ("nike"), "class": "App_cardTopLogo_2ho9K"%>
+        </div>
+        <div class="App_cardTitle_29nyq">
+            Your cart
+            <span id="total" class="App_cardTitleAmount_17QFR">$0.00</span>
+        </div>
+
+
+        <div class="App_cardBody_1tfYc">
+            <% @products.each do |product| %>
+            <div id="cart_item_<%=product.id%>" class="App_cartItem_lfA9I" style="display: none">
+                <div class="App_cartItemLeft_1HqDk cartItemLeft">
+                    <div class="App_cartItemImage_1rLvq cartItemImage" style="background-color: <%="#" + product.color %>;">
+                        <div class="App_cartItemImageBlock_wRE4E">
+                            <%= image_tag (product.image_url)%>
+                        </div>
+                    </div>
+                </div>
+                <div class="App_cartItemRight_2LNcC cartItemRight">
+                    <div class="App_cartItemName_3he6M cartItemName"><%= product.name%></div>
+                    <div class="App_cartItemPrice_R0sr2 cartItemPrice">
+                                <span>$</span>
+                                <span id="item_price_<%=product.id%>"><%= product.price%></span>
+                    </div>
+                    <div class="App_cartItemActions_13kia cartItemActions">
+                        <div class="App_cartItemCount_1GCCN cartItemCount">
+                            <div class="App_cartItemCountButton_Gr8VG" onclick="decrease(<%=product.id%>)">-</div>
+                            <div id="item_count_<%=product.id%>" class="App_cartItemCountNumber_1Evq9">0</div>
+                            <div class="App_cartItemCountButton_Gr8VG" onclick="increase(<%=product.id%>)">+</div>
+                        </div>
+                        <div class="App_cartItemRemove_1GiLR cartItemRemove" onclick="remove(<%=product.id%>)">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAB2AAAAdgB+lymcgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAALISURBVHic7Zs9bxNBEIYfgyUKAhhQUhDRICEBCh0fgkhBNIT8gPwZ6Gig5y8QCUhH5AqE3EZJgQRKEDSpKEAQkTMdcijGRvi8Z+/e3eze4X2kKe40t/Pu+LRfN4bIdNNQbLsJ3ATOFWznC7AJ/C6syCMngC3gsCTb7LdZGx5SXucH9kBD6BGNRoGrNWlTLQEa7R5VaFMtAbXBZwLWkVnHxtZ9iZr6N6Bp6TcHXAOOW/qfz7i36un5X8A28NXSfywrQJfypzVtS4D7ZSRgpwKdyWsfJnXOZincxf7VrxoJcHKcg80g2ClFShg6ZTQyD2xQr3GgC7yi+EYs8t+TZ329gKwJfiLzbRU4Cywh/fmuGegpw/PssmYwS5aAfURTD3ikFegKo4PNe61gDrxjWFMPuGj7sMte4JLh3mWH57VYSF03cDg7cEmAabxQ2aM7UkjX1O8GfSRgHmgjM8YO4wfOFWC379umYguZVcyrrkm0U/4JMGvwm2N0tblh0b5Jk+222csbcCd1PYOsI9KYzhvuqij6Bx8JMO0kZyz91HehcRAMLSA0MQGhBYQmJiC0gNDEBIQWEJqYgNACQhMTEFpAaGICQgsITUxAaAGhiQnwEMP0+axr6af+6c1HAjqp6wQpo02zxWhi3moIykveU+FBfUGCfEq7N8Z3GSlrSbD/vl/oVNiFvAnQpvLH4pUmJsDBN2tEDlnHn1UBZppljLgkYC/j/i2HNspmMeP+nkawY8ABowPOa41gFjSQaTKt5wDRqsKaIeAh8Bjd/x+laQBPMrQ80wy8iJSgmAK/QWpzW4rxW8gndNMvPyiPua0YH4DnGcGrYGuK/f7LGeBjgM5Nsl3gtGK/h7gAfFbukIt96mvySgt4WVB4UesBL4BTyn0dy42+iEGxog/bR8ai60XFlzl1NZFiyllknNDgB/ANKbaq1V9pI1XlD82w8ru3YIVHAAAAAElFTkSuQmCC"></div>
+                        </div>
+                        </div>
+                    </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+
+
